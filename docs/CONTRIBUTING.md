@@ -56,7 +56,7 @@ Please follow the coding style conventions detailed below:
 
 
 [email]: mailto:J.F.J.Laros@lumc.nl
-[issues]: https://github.com/mutalyzer/mutalyzer-client/issues/new
-[compare]: https://github.com/mutalyzer/mutalyzer-client/compare
-[pull]: https://github.com/mutalyzer/mutalyzer-client/pulls
+[issues]: https://github.com/mutalyzer/client/issues/new
+[compare]: https://github.com/mutalyzer/client/compare
+[pull]: https://github.com/mutalyzer/client/pulls
 [pep8]: https://www.python.org/dev/peps/pep-0008/

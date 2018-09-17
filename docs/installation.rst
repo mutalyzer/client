@@ -16,10 +16,10 @@ the following commands.
 
 ::
 
-    git clone https://github.com/mutalyzer/mutalyzer-client.git
+    git clone https://github.com/mutalyzer/client.git mutalyzer-client
     cd mutalyzer-client
     pip install .
 
 
 .. _PyPI: https://pypi.org/project/mutalyzer-client
-.. _GitHub: https://github.com/mutalyzer/mutalyzer-client.git
+.. _GitHub: https://github.com/mutalyzer/client.git
