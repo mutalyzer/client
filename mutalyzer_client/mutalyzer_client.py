@@ -73,29 +73,19 @@ class Mutalyzer(object):
             self._chromosome_to_accession[chromosome],
             start, start + len(ref) - 1, alt))
 
-    def _check_vcf_transcript(self, chromosome, transcript, start, ref, alt):
-        return self._request(variant='{}({}):c.{}_{}delins{}'.format(
-            self._chromosome_to_accession[chromosome], transcript,
-            start, start + len(ref) - 1, alt))
-
-    def _details_to_vcf(self, details):
+    def _details_to_db(self, details):
         return (
             self._accession_to_chromosome[details['reference_file']],
             details['start'], details['ref'], details['alt'])
 
-    def hgvs_to_vcf(self, variant):
-        return self._details_to_vcf(
+    def hgvs_to_db(self, variant):
+        return self._details_to_db(
             self._request(variant=variant)['varDetails'])
+
+    def vcf_to_db(self, chromosome, start, ref, alt):
+        return self._details_to_db(
+            self._check_vcf_genomic(chromosome, start, ref, alt)['varDetails'])
 
     def vcf_to_hgvs(self, chromosome, start, ref, alt):
         return self._check_vcf_genomic(
             chromosome, start, ref, alt)['genomicDescription']
-
-    def check_genomic(self, chromosome, start, ref, alt):
-        return self._details_to_vcf(
-            self._check_vcf_genomic(chromosome, start, ref, alt)['varDetails'])
-
-    def check_transcript(self, chromosome, transcript, start, ref, alt):
-        return self._details_to_vcf(
-            self._check_vcf_transcript(
-                chromosome, transcript, start, ref, alt)['varDetails'])

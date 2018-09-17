@@ -6,6 +6,37 @@ from . import doc_split, usage, version
 from .mutalyzer_client import build, Mutalyzer
 
 
+def hgvs_to_db(build_name, input_handle, output_handle):
+    """
+    Convert all HGVS variants in a text file to database format.
+
+    :arg str build_name: Build name.
+    :arg stream input_handle: Open readable handle to a text file.
+    :arg stream output_handle: Open writeable handle to a text file.
+    """
+    mutalyzer = Mutalyzer(build_name)
+
+    for record in input_handle.readlines():
+        output_handle.write('{}\n'.format('\t'.join(mutalyzer.hgvs_to_db(
+            record))))
+
+
+def vcf_to_db(build_name, input_handle, output_handle):
+    """
+    Convert all variants in a VCF file to database format.
+
+    :arg str build_name: Build name.
+    :arg stream input_handle: Open readable handle to a VCF file.
+    :arg stream output_handle: Open writeable handle to a text file.
+    """
+    mutalyzer = Mutalyzer(build_name)
+
+    for record in Reader(input_handle):
+        for alt in record.ALT:
+            output_handle.write('{}\n'.format('\t'.join(mutalyzer.vcf_to_db(
+                record.CHROM, record.POS, record.REF, alt))))
+
+
 def vcf_to_hgvs(build_name, input_handle, output_handle):
     """
     Convert all variants in a VCF file to HGVS.
@@ -20,37 +51,6 @@ def vcf_to_hgvs(build_name, input_handle, output_handle):
         for alt in record.ALT:
             output_handle.write('{}\n'.format(mutalyzer.vcf_to_hgvs(
                 record.CHROM, record.POS, record.REF, alt)))
-
-
-def vcf_to_details(build_name, input_handle, output_handle):
-    """
-    Convert all variants in a VCF file to details.
-
-    :arg str build_name: Build name.
-    :arg stream input_handle: Open readable handle to a VCF file.
-    :arg stream output_handle: Open writeable handle to a text file.
-    """
-    mutalyzer = Mutalyzer(build_name)
-
-    for record in Reader(input_handle):
-        for alt in record.ALT:
-            output_handle.write('{}\n'.format('\t'.join(mutalyzer.check_genomic(
-                record.CHROM, record.POS, record.REF, alt))))
-
-
-def hgvs_to_details(build_name, input_handle, output_handle):
-    """
-    Convert all HGVS variants in a text file to details.
-
-    :arg str build_name: Build name.
-    :arg stream input_handle: Open readable handle to a text file.
-    :arg stream output_handle: Open writeable handle to a text file.
-    """
-    mutalyzer = Mutalyzer(build_name)
-
-    for record in input_handle.readlines():
-        output_handle.write('{}\n'.format('\t'.join(mutalyzer.hgvs_to_vcf(
-            record))))
 
 
 def main():
@@ -82,14 +82,14 @@ def main():
     subparser.set_defaults(func=vcf_to_hgvs)
 
     subparser = subparsers.add_parser(
-        'vcf_to_details', parents=[build_parser, input_parser, output_parser],
-        description=doc_split(vcf_to_details))
-    subparser.set_defaults(func=vcf_to_details)
+        'vcf_to_db', parents=[build_parser, input_parser, output_parser],
+        description=doc_split(vcf_to_db))
+    subparser.set_defaults(func=vcf_to_db)
 
     subparser = subparsers.add_parser(
-        'hgvs_to_details', parents=[build_parser, input_parser, output_parser],
-        description=doc_split(hgvs_to_details))
-    subparser.set_defaults(func=hgvs_to_details)
+        'hgvs_to_db', parents=[build_parser, input_parser, output_parser],
+        description=doc_split(hgvs_to_db))
+    subparser.set_defaults(func=hgvs_to_db)
 
     try:
         args = parser.parse_args()
