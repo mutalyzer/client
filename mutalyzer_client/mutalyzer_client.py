@@ -80,7 +80,7 @@ class Mutalyzer(object):
     def _details_to_db(self, details):
         return (
             self._accession_to_chromosome[details['reference_file']],
-            details['start'], details['ref'], details['alt'])
+            int(details['start']), details['ref'], details['alt'])
 
     def hgvs_to_db(self, variant):
         """Convert an HGVS variant description to database format.

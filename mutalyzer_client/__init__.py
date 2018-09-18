@@ -6,7 +6,7 @@ from .mutalyzer_client import Mutalyzer
 
 
 config = ConfigParser()
-config.readfp(open('{}/setup.cfg'.format(dirname(abspath(__file__)))))
+config.read_file(open('{}/setup.cfg'.format(dirname(abspath(__file__)))))
 
 _copyright_notice = 'Copyright (c) {} {} <{}>'.format(
     config.get('metadata', 'copyright'),

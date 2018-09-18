@@ -6,6 +6,10 @@ from . import doc_split, usage, version
 from .mutalyzer_client import build, Mutalyzer
 
 
+def _write_db(handle, chrom, pos, ref, alt):
+    handle.write('{}\t{}\t{}\t{}\n'.format(chrom, pos, ref, alt))
+
+
 def hgvs_to_db(build_name, input_handle, output_handle):
     """
     Convert all HGVS variants in a text file to database format.
@@ -17,8 +21,7 @@ def hgvs_to_db(build_name, input_handle, output_handle):
     mutalyzer = Mutalyzer(build_name)
 
     for record in input_handle.readlines():
-        output_handle.write('{}\n'.format('\t'.join(mutalyzer.hgvs_to_db(
-            record))))
+        _write_db(output_handle, *mutalyzer.hgvs_to_db(record))
 
 
 def vcf_to_db(build_name, input_handle, output_handle):
@@ -33,8 +36,8 @@ def vcf_to_db(build_name, input_handle, output_handle):
 
     for record in Reader(input_handle):
         for alt in record.ALT:
-            output_handle.write('{}\n'.format('\t'.join(mutalyzer.vcf_to_db(
-                record.CHROM, record.POS, record.REF, alt))))
+            _write_db(output_handle, *mutalyzer.vcf_to_db(
+                record.CHROM, record.POS, record.REF, alt))
 
 
 def vcf_to_hgvs(build_name, input_handle, output_handle):
