@@ -58,6 +58,10 @@ build = {
 
 class Mutalyzer(object):
     def __init__(self, build_name):
+        """Initialise the class.
+
+        :arg str build_name: One of `build.keys()`.
+        """
         self._chromosome_to_accession = build[build_name]
         self._accession_to_chromosome = dict(
             map(lambda x: x[::-1], self._chromosome_to_accession.items()))
@@ -68,10 +72,10 @@ class Mutalyzer(object):
             'https://mutalyzer.nl/json/runMutalyzerLight',
             params={**kwargs, 'extras.varDetails': True}).json()
 
-    def _check_vcf_genomic(self, chromosome, start, ref, alt):
+    def _check_vcf_genomic(self, chromosome, pos, ref, alt):
         return self._request(variant='{}:g.{}_{}delins{}'.format(
             self._chromosome_to_accession[chromosome],
-            start, start + len(ref) - 1, alt))
+            pos, pos + len(ref) - 1, alt))
 
     def _details_to_db(self, details):
         return (
@@ -79,13 +83,37 @@ class Mutalyzer(object):
             details['start'], details['ref'], details['alt'])
 
     def hgvs_to_db(self, variant):
+        """Convert an HGVS variant description to database format.
+
+        :arg str variant: Variant description in HGVS format.
+
+        :returns tuple: chromosome, position, reference, alternative
+        """
         return self._details_to_db(
             self._request(variant=variant)['varDetails'])
 
-    def vcf_to_db(self, chromosome, start, ref, alt):
-        return self._details_to_db(
-            self._check_vcf_genomic(chromosome, start, ref, alt)['varDetails'])
+    def vcf_to_db(self, chromosome, pos, ref, alt):
+        """Convert a VCF variant description to database format.
 
-    def vcf_to_hgvs(self, chromosome, start, ref, alt):
+        :arg str chromosome: Chromosome name.
+        :arg int pos: Position.
+        :arg str ref: Reference allele.
+        :arg str alt: Alternative allele.
+
+        :returns tuple: chromosome, position, reference, alternative
+        """
+        return self._details_to_db(
+            self._check_vcf_genomic(chromosome, pos, ref, alt)['varDetails'])
+
+    def vcf_to_hgvs(self, chromosome, pos, ref, alt):
+        """Convert a VCF variant description to HGVS.
+
+        :arg str chromosome: Chromosome name.
+        :arg int pos: Position.
+        :arg str ref: Reference allele.
+        :arg str alt: Alternative allele.
+
+        :returns str: Variant description in HGVS format.
+        """
         return self._check_vcf_genomic(
-            chromosome, start, ref, alt)['genomicDescription']
+            chromosome, pos, ref, alt)['genomicDescription']
