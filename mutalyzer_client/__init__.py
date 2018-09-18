@@ -2,6 +2,8 @@ from os.path import dirname, abspath
 
 from configparser import ConfigParser
 
+from .mutalyzer_client import Mutalyzer
+
 
 config = ConfigParser()
 config.readfp(open('{}/setup.cfg'.format(dirname(abspath(__file__)))))

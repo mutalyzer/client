@@ -24,9 +24,11 @@ CLI for the Mutalyzer API
 
 ----
 
-This package provides ...
+This package provides a client library and a command line interface for the
+Mutalyzer_ web service.
 
 Please see ReadTheDocs_ for the latest documentation.
 
 
+.. _Mutalyzer: https://mutalyzer.nl
 .. _ReadTheDocs: https://mutalyzer-client.readthedocs.io/en/latest/index.html

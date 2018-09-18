@@ -58,7 +58,7 @@ def main():
     build_parser = ArgumentParser(add_help=False)
     build_parser.add_argument(
         'build_name', metavar='BUILD', type=str, choices=build.keys(),
-        help='build name')
+        help='build name (%(type)s choose from: %(choices)s)')
 
     input_parser = ArgumentParser(add_help=False)
     input_parser.add_argument(
