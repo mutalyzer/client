@@ -1,10 +1,10 @@
-CLI for the Mutalyzer API
-=========================
+Mutalyzer API client and command line interface
+===============================================
 
 .. image:: https://img.shields.io/github/last-commit/mutalyzer/client.svg
    :target: https://github.com/mutalyzer/client/graphs/commit-activity
-.. image:: https://travis-ci.org/mutalyzer/mutalyzer-client.svg?branch=master
-   :target: https://travis-ci.org/mutalyzer/mutalyzer-client
+.. image:: https://travis-ci.org/mutalyzer/client.svg?branch=master
+   :target: https://travis-ci.org/mutalyzer/client
 .. image:: https://readthedocs.org/projects/mutalyzer-client/badge/?version=latest
    :target: https://mutalyzer-client.readthedocs.io/en/latest
 .. image:: https://img.shields.io/github/release-date/mutalyzer/client.svg
